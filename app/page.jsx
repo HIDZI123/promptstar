@@ -1,4 +1,4 @@
-import React from 'react'
+import Feed  from "@components/Feed";
 
 const Home = () => {
   return (
@@ -10,8 +10,10 @@ const Home = () => {
         </h1>
 
         <p className='text-center desc' >
-            PromptStar is an open source Prompt sharing platform where you can create, or discover different useful AI prompts
+          PromptStar is an open source Prompt sharing platform where you can create, or discover different useful AI prompts
         </p>
+
+        <Feed />
     </section>
   )
 }
