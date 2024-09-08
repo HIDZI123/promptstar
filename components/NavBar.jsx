@@ -40,7 +40,7 @@ const NavBar = () => {
             <Link href="/create-post">
               <button className="black_btn">Create Post</button>
             </Link>
-            <button className="outline_btn">Sign Out</button>
+            <button className="outline_btn" onClick={signOut}>Sign Out</button>
             <Link href="/profile" className="rounded-full">
               <Image
                 src={session?.user.image}
@@ -99,7 +99,7 @@ const NavBar = () => {
                 </Link>
                 <button
                   className="black_btn w-full mt-5"
-                  onClick={() => settoggle((prev) => !prev)}
+                  onClick={signOut}
                 >
                   Sign Out
                 </button>
