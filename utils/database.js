@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-let isConnected = true;
+let isConnected = false;
 
-export const connectToDB = () => {
+export const connectToDB = async () => {
   mongoose.set("strictQuery", true);
 
   if (isConnected) {
@@ -11,7 +11,7 @@ export const connectToDB = () => {
   }
 
   try {
-    mongoose.connect(process.env.MONGODB_URI, {
+    await mongoose.connect(process.env.MONGODB_URI, {
       dbName: "promptStar",
     });
 

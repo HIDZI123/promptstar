@@ -4,12 +4,12 @@ import Image from "next/image";
 import img from "@public/assets/images/logo.svg";
 import img2 from "@public/assets/icons/copy.svg";
 import { useEffect, useState } from "react";
-import { signIn, signOut, getProviders, getSession } from "next-auth/react";
+import { signIn, signOut, getProviders, getSession, useSession } from "next-auth/react";
 
 const NavBar = () => {
   const [toggle, settoggle] = useState(false);
   const [providers, setProviders] = useState(null);
-  const isSignedIn = true;
+  const { data : session } = useSession();
 
   useEffect(() => {
     const settingProviders = async () => {
@@ -35,7 +35,7 @@ const NavBar = () => {
 
       {/* Desktop Navigation */}
       <div className="sm:flex hidden">
-        {isSignedIn ? (
+        {session?.user ? (
           <div className="flex justify-center items-center gap-5">
             <Link href="/create-post">
               <button className="black_btn">Create Post</button>
@@ -43,18 +43,18 @@ const NavBar = () => {
             <button className="outline_btn">Sign Out</button>
             <Link href="/profile" className="rounded-full">
               <Image
-                src={img2}
+                src={session?.user.image}
                 alt="ProfileIcture"
-                width={30}
-                height={30}
-                className="object-contain"
+                width={38}
+                height={38}
+                className="object-contain rounded-full"
               />
             </Link>
           </div>
         ) : (
           <div>
             {providers &&
-              Object.values(providers).map((provider) => {
+              Object.values(providers).map((provider) => (
                 <button
                   type="button"
                   className="black_btn"
@@ -62,22 +62,22 @@ const NavBar = () => {
                   onClick={() => signIn(provider.id)}
                 >
                   Sign In
-                </button>;
-              })}
+                </button>
+              ))}
           </div>
         )}
       </div>
 
       {/*  Mobile Navigation */}
       <div className="sm:hidden flex relative">
-        {isSignedIn ? (
+        {session?.user ? (
           <div className="flex ">
             <Image
-              src={img2}
+              src={session?.user.image}
               alt="ProfileIcture"
-              width={30}
-              height={30}
-              className="object-contain"
+              width={37}
+              height={37}
+              className="object-contain rounded-full"
               onClick={() => settoggle((prev) => !prev)}
             />
 
@@ -109,7 +109,7 @@ const NavBar = () => {
         ) : (
           <div>
             {providers &&
-              Object.values(providers).map((provider) => {
+              Object.values(providers).map((provider) => (
                 <button
                   type="button"
                   className="black_btn"
@@ -117,8 +117,8 @@ const NavBar = () => {
                   onClick={() => signIn(provider.id)}
                 >
                   Sign In
-                </button>;
-              })}
+                </button>
+              ))}
           </div>
         )}
       </div>
