@@ -32,13 +32,15 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await fetch(`/api/users/${session?.user.id}/posts`);
-      const data = await response.json();
-      setPosts(data);
+      if (session?.user.id) {
+        const response = await fetch(`/api/users/${session.user.id}/posts`);
+        const data = await response.json();
+        setPosts(data);
+      }
     };
 
-    if (session?.user.id) fetchPost();
-  }, []);
+    fetchPost();
+  }, [session]);
 
   return (
     <Profile
