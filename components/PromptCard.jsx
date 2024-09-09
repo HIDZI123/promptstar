@@ -10,6 +10,7 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
   const { data: session } = useSession();
   const pathName = usePathname();
   const [copied, setCopied] = useState("");
+  const router = useRouter();
 
   const handleCopy = () => {
     setCopied(post.prompt);
@@ -27,6 +28,7 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
             width={50}
             className="object-contain rounded-full"
             alt="Profile Image "
+            onClick={() => router.push('/profile')}
           />
         </div>
 
@@ -54,13 +56,13 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
 
       <p
         className="text-sm font-inter cursor-pointer blue_gradient"
-        onClick={() => handleTagClick}
+        onClick={() => handleTagClick(post.tag)}
       >
         {post.tag}
       </p>
 
       {session?.user.id === post.creator._id && pathName === "/profile" && (
-        <div className="mt-6 flex-end flex items-center gap-10">
+        <div className="mt-6 flex-end flex items-center gap-10 border-t border-gray-200 pt-3">
           <button
             className="green_gradient font-inter text-sm cursor-pointer"
             onClick={handleEdit}

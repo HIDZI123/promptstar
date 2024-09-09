@@ -2,9 +2,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import img from "@public/assets/images/logo.svg";
-import img2 from "@public/assets/icons/copy.svg";
 import { useEffect, useState } from "react";
-import { signIn, signOut, getProviders, getSession, useSession } from "next-auth/react";
+import { signIn, signOut, getProviders, useSession } from "next-auth/react";
 
 const NavBar = () => {
   const [toggle, settoggle] = useState(false);
