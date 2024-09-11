@@ -1,9 +1,11 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import PromptCard from "./PromptCard";
+import { useSession } from "next-auth/react";
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
+  const { data: session } = useSession(); 
 
   // Search states
   const [searchText, setSearchText] = useState("");
@@ -18,7 +20,7 @@ const Feed = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [session?.user.id]);
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
