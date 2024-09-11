@@ -39,6 +39,8 @@ const UpdatePrompt = () => {
     e.preventDefault();
     setSubmitform(true);
 
+    if (!id) { alert("Invalid prompt ID"); return; }
+
     try {
       const response = await fetch(`/api/prompt/${id}`, {
         method: "PATCH",
