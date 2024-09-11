@@ -4,7 +4,7 @@ import Form from "@components/Form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-const UpdatePrompt = () => {
+function UpdatePromptContent() {
   const [submitForm, setSubmitform] = useState(false);
   const [post, setPost] = useState({
     prompt: "",
@@ -63,19 +63,23 @@ const UpdatePrompt = () => {
     }
   };
 
+  return id ? (
+    <Form
+      type="Update"
+      post={post}
+      setPost={setPost}
+      handleSubmit={handleSubmit}
+      submitForm={submitForm}
+    />
+  ) : (
+    <div>Invalid prompt ID</div>
+  );
+}
+
+const UpdatePrompt = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      {id ? (
-        <Form
-          type="Update"
-          post={post}
-          setPost={setPost}
-          handleSubmit={handleSubmit}
-          submitForm={submitForm}
-        />
-      ) : (
-        <div>Invalid prompt ID</div>
-      )}
+      <UpdatePromptContent />
     </Suspense>
   );
 };
