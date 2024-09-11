@@ -1,7 +1,7 @@
-'use client';
-import React, { useState, useEffect, Suspense } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Form from "@components/Form";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 const UpdatePrompt = () => {
@@ -13,14 +13,14 @@ const UpdatePrompt = () => {
 
   const router = useRouter();
   const { data: session } = useSession();
-  const searchParams = useSearchParams();
-  const promptId = searchParams?.get("id");  // Safely access searchParams
+  const searchParams = new URLSearchParams(window.location.search);
+  const id = searchParams.get("id");
 
   useEffect(() => {
-    if (promptId) {
+    if (id) {
       const fetchPosts = async () => {
         try {
-          const response = await fetch(`/api/prompt/${promptId}`);
+          const response = await fetch(`/api/prompt/${id}`);
           const data = await response.json();
           setPost({
             prompt: data.prompt,
@@ -33,14 +33,14 @@ const UpdatePrompt = () => {
 
       fetchPosts();
     }
-  }, [promptId]);
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitform(true);
 
     try {
-      const response = await fetch(`/api/prompt/${promptId}`, {
+      const response = await fetch(`/api/prompt/${id}`, {
         method: "PATCH",
         body: JSON.stringify({
           prompt: post.prompt,
@@ -61,20 +61,16 @@ const UpdatePrompt = () => {
     }
   };
 
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      {promptId ? (
-        <Form
-          type="Update"
-          post={post}
-          setPost={setPost}
-          handleSubmit={handleSubmit}
-          submitForm={submitForm}
-        />
-      ) : (
-        <div>Invalid prompt ID</div>
-      )}
-    </Suspense>
+  return id ? (
+    <Form
+      type="Update"
+      post={post}
+      setPost={setPost}
+      handleSubmit={handleSubmit}
+      submitForm={submitForm}
+    />
+  ) : (
+    <div>Invalid prompt ID</div>
   );
 };
 
