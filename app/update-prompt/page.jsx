@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState, useEffect, Suspense } from "react";
 import Form from "@components/Form";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -14,22 +14,25 @@ const UpdatePrompt = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
-  const promptId = searchParams.get("id");
+  const promptId = searchParams?.get("id");  // Safely access searchParams
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch(`/api/prompt/${promptId}`);
-      const data = await response.json();
+    if (promptId) {
+      const fetchPosts = async () => {
+        try {
+          const response = await fetch(`/api/prompt/${promptId}`);
+          const data = await response.json();
+          setPost({
+            prompt: data.prompt,
+            tag: data.tag,
+          });
+        } catch (error) {
+          console.error("Error fetching prompt data:", error);
+        }
+      };
 
-      console.log(data);
-
-      setPost({
-        prompt: data.prompt,
-        tag: data.tag,
-      });
-    };
-
-    if (promptId) fetchPosts();
+      fetchPosts();
+    }
   }, [promptId]);
 
   const handleSubmit = async (e) => {
@@ -49,10 +52,10 @@ const UpdatePrompt = () => {
       if (response.ok) {
         router.push("/");
       } else {
-        console.log("Error Occured");
+        console.log("Error Occurred");
       }
     } catch (error) {
-      console.error("Error occured while posting prompt: ", error);
+      console.error("Error occurred while posting prompt: ", error);
     } finally {
       setSubmitform(false);
     }
@@ -60,13 +63,17 @@ const UpdatePrompt = () => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Form
-        type="Update"
-        post={post}
-        setPost={setPost}
-        handleSubmit={handleSubmit}
-        submitForm={submitForm}
-      />
+      {promptId ? (
+        <Form
+          type="Update"
+          post={post}
+          setPost={setPost}
+          handleSubmit={handleSubmit}
+          submitForm={submitForm}
+        />
+      ) : (
+        <div>Invalid prompt ID</div>
+      )}
     </Suspense>
   );
 };
